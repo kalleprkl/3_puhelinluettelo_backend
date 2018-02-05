@@ -1,0 +1,27 @@
+{
+  "name": "3_puhelinluettelo_backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "watch": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kalleprkl/3_puhelinluettelo_backend.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kalleprkl/3_puhelinluettelo_backend/issues"
+  },
+  "homepage": "https://github.com/kalleprkl/3_puhelinluettelo_backend#readme",
+  "dependencies": {
+    "express": "^4.16.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.14.12"
+  }
+}
