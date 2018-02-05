@@ -24,15 +24,23 @@ const persons = [
     }
 ]
 
-const info = '<div><p>puhelinluettelossa on ' + persons.length + ' henkilön tiedot</p><p>' + new Date() + '</p></div>'
-
 app.get('/info', (req, res) => {
     res.send('<div><p>puhelinluettelossa on ' + persons.length + ' henkilön tiedot</p><p>' + new Date() + '</p></div>')
 })
 
-
 app.get('/api/persons', (req, res) => {
     res.json(persons)
+})
+
+app.get('/api/persons/:id', (request, response) => {
+    const id = Number(request.params.id)
+    const person = persons.find(person => person.id === id)
+
+    if (person) {
+        response.json(person)
+    } else {
+        response.status(404).end()
+    }
 })
 
 const PORT = 3001
