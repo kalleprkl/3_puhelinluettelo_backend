@@ -1,0 +1,2 @@
+
+DELETE   https://protected-depths-44635.herokuapp.com/api/persons/492442

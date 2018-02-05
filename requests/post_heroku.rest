@@ -1,0 +1,7 @@
+POST https://protected-depths-44635.herokuapp.com/api/persons
+content-type: application/json
+
+{
+    "name": "liplaps",
+    "number": "123"
+}
