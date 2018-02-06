@@ -84,7 +84,6 @@ app.post('/api/persons', (request, response) => {
     const person = {
         name: body.name,
         number: body.number || '',
-        date: new Date(),
         id: generateId()
     }
 
@@ -100,7 +99,6 @@ app.put('/api/persons/:id', (request, response) => {
     const person = {
         name: body.name,
         number: body.number,
-        date: oldPerson.date,
         id: id
     }
     
