@@ -48,9 +48,8 @@ app.get('/api/persons', (req, res) => {
     Person
         .find({})
         .then(persons => {
-            console.log('KAAA')
-            console.log(persons)
-            return res.json(persons)
+            //console.log(persons.map(Person.format))
+            return res.json(persons.map(Person.format))
         })
 })
 
