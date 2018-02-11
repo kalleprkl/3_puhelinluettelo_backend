@@ -41,27 +41,38 @@ app.use(cors())
 ]*/
 
 app.get('/info', (req, res) => {
-    res.send('<div><p>puhelinluettelossa on ' + persons.length + ' henkilön tiedot</p><p>' + new Date() + '</p></div>')
+    Person.count({})
+        .then((response => {
+            res.send('<div><p>puhelinluettelossa on ' + response + ' henkilön tiedot</p><p>' + new Date() + '</p></div>')
+        }))
+
+
 })
 
 app.get('/api/persons', (req, res) => {
     Person
         .find({})
         .then(persons => {
-            //console.log(persons.map(Person.format))
             return res.json(persons.map(Person.format))
         })
 })
 
 app.get('/api/persons/:id', (request, response) => {
-    const id = Number(request.params.id)
-    const person = persons.find(person => person.id === id)
+    Person
+        .findById(request.params.id)
+        .then(person => {
+            if (person) {
+                response.json(Person.format(person))
+            } else {
+                response.status(404).end()
+            }
+        })
+        .catch(error => {
+            console.log(error)
+            response.status(400).send({ error: 'malformatted id' })
+        })
 
-    if (person) {
-        response.json(person)
-    } else {
-        response.status(404).end()
-    }
+
 })
 
 app.delete('/api/persons/:id', (request, response) => {
