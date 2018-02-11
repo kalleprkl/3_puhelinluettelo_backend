@@ -3,15 +3,16 @@ const app = express()
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const cors = require('cors')
+const Person = require('./models/person')
 
-morgan.token('payload', (req, res) => { return JSON.stringify(req.body)})
+morgan.token('payload', (req, res) => { return JSON.stringify(req.body) })
 
 app.use(express.static('build'))
 app.use(bodyParser.json())
 app.use(morgan(':method :url :payload :status :res[content-length] - :response-time ms'))
 app.use(cors())
 
-let persons = [
+/*let persons = [
     {
         "name": "Arto Hellas",
         "number": "040-123456",
@@ -37,14 +38,20 @@ let persons = [
         "number": "123",
         "id": 5
     }
-]
+]*/
 
 app.get('/info', (req, res) => {
     res.send('<div><p>puhelinluettelossa on ' + persons.length + ' henkilön tiedot</p><p>' + new Date() + '</p></div>')
 })
 
 app.get('/api/persons', (req, res) => {
-    res.json(persons)
+    Person
+        .find({})
+        .then(persons => {
+            console.log('KAAA')
+            console.log(persons)
+            return res.json(persons)
+        })
 })
 
 app.get('/api/persons/:id', (request, response) => {
@@ -66,9 +73,9 @@ app.delete('/api/persons/:id', (request, response) => {
 })
 
 app.post('/api/persons', (request, response) => {
-    
+
     const body = request.body
-    
+
     if (request.body.name === undefined) {
         return response.status(400).json({ error: 'name missing' })
     }
@@ -101,10 +108,10 @@ app.put('/api/persons/:id', (request, response) => {
         number: body.number,
         id: id
     }
-    
-    persons = persons.filter(p => p.id !== id) 
+
+    persons = persons.filter(p => p.id !== id)
     persons = persons.concat(person)
-    
+
     response.json(person)
 })
 
