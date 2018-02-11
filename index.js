@@ -64,12 +64,12 @@ app.get('/api/persons/:id', (request, response) => {
     }
 })
 
-app.delete('/api/persons/:id', (request, response) => {
+/*app.delete('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id)
     persons = persons.filter(person => person.id !== id)
 
     response.status(204).end()
-})
+})*/
 
 app.post('/api/persons', (request, response) => {
 
@@ -83,19 +83,27 @@ app.post('/api/persons', (request, response) => {
         return response.status(400).json({ error: 'number missing' })
     }
 
-    if (persons.find(p => p.name === body.name)) {
+    /*if (persons.find(p => p.name === body.name)) {
         return response.status(400).json({ error: 'name already listed' })
-    }
+    }*/
 
-    const person = {
+    const person = new Person({
         name: body.name,
         number: body.number || '',
         id: generateId()
-    }
+    })
 
-    persons = persons.concat(person)
+    //persons = persons.concat(person)
 
-    response.json(person)
+    person
+        .save()
+        .then(savedPerson => {
+            console.log("FUUUU")
+            console.log(savedPerson)
+            return response.json(Person.format(savedPerson))
+        })
+
+
 })
 
 app.put('/api/persons/:id', (request, response) => {
