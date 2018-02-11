@@ -106,21 +106,29 @@ app.post('/api/persons', (request, response) => {
         return response.status(400).json({ error: 'name already listed' })
     }*/
 
-    const person = new Person({
-        name: body.name,
-        number: body.number || '',
-        id: generateId()
-    })
+    Person.findOne({ name: body.name })
+        .then(result => {
+            if (result) {
+                return response.status(400).json({ error: 'name already listed' })
+            } else {
+                const person = new Person({
+                    name: body.name,
+                    number: body.number || '',
+                    id: generateId()
+                })
+                person
+                    .save()
+                    .then(savedPerson => {
+                        return response.json(Person.format(savedPerson))
+                    })
+            }
+        })
+
+
 
     //persons = persons.concat(person)
 
-    person
-        .save()
-        .then(savedPerson => {
-            console.log("FUUUU")
-            console.log(savedPerson)
-            return response.json(Person.format(savedPerson))
-        })
+
 
 
 })
