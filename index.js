@@ -115,19 +115,32 @@ app.post('/api/persons', (request, response) => {
 })
 
 app.put('/api/persons/:id', (request, response) => {
-    const id = Number(request.params.id)
+    const id = request.params.id
     const body = request.body
-    const oldPerson = persons.find(p => p.id === id)
+    const oldPerson = Person.findById(id)
     const person = {
         name: body.name,
         number: body.number,
         id: id
     }
 
-    persons = persons.filter(p => p.id !== id)
+    Person
+        .findByIdAndUpdate(id, person, { new: true })
+        .then(updatedPerson => {
+            console.log(updatedPerson)
+            response.json(Person.format(updatedPerson))
+        })
+        .catch(error => {
+            console.log(error)
+            response.status(400).send({
+                error: 'malformatted id'
+            })
+        })
+
+    /*persons = persons.filter(p => p.id !== id)
     persons = persons.concat(person)
 
-    response.json(person)
+    response.json(person)*/
 })
 
 generateId = () => {
